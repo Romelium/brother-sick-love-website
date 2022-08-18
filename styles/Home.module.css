@@ -105,6 +105,8 @@
 
 .logo {
   height: 1em;
+  font-size: 2em;
+  text-align: center;
   margin-left: 0.5rem;
 }
 
