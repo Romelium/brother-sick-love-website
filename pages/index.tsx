@@ -26,10 +26,13 @@ const Home: NextPage = () => {
           <planeGeometry />
           <meshStandardMaterial />
         </mesh>
-        <mesh castShadow={true} scale={1} position={[0, 0, 0]}>
-          <sphereGeometry />
-          <meshStandardMaterial />
-        </mesh>
+        <TransformControls mode="translate">
+          <mesh castShadow={true} scale={1} position={[0, 0, 0]}>
+            <sphereGeometry />
+            <meshStandardMaterial />
+          </mesh>
+        </TransformControls>
+        <OrbitControls makeDefault />
       </Canvas>
       <footer className={styles.footer}>
         <a
