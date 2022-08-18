@@ -34,16 +34,6 @@ const Home: NextPage = () => {
         </TransformControls>
         <OrbitControls makeDefault />
       </Canvas>
-      <footer className={styles.footer}>
-        <a
-          href="https://github.com/Romelianism"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Made by your and truly
-          <span className={styles.logo}>Romelianism</span>
-        </a>
-      </footer>
     </div>
   );
 };
