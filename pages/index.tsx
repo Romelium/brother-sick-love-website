@@ -1,6 +1,7 @@
+import { Canvas } from "@react-three/fiber";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import { Euler, MeshStandardMaterial, Vector3 } from "three";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -14,9 +15,22 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}></main>
-
+      <Canvas shadows={true}>
+        <pointLight castShadow={true} position={[10, 10, 10]} />
+        <mesh
+          receiveShadow={true}
+          scale={100}
+          position={[0, -5, 0]}
+          rotation={[-1, 0, 0]}
+        >
+          <planeGeometry />
+          <meshStandardMaterial />
+        </mesh>
+        <mesh castShadow={true} scale={1} position={[0, 0, 0]}>
+          <sphereGeometry />
+          <meshStandardMaterial />
+        </mesh>
+      </Canvas>
       <footer className={styles.footer}>
         <a
           href="https://github.com/Romelianism"
