@@ -1,7 +1,7 @@
+import { OrbitControls, TransformControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Euler, MeshStandardMaterial, Vector3 } from "three";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           receiveShadow={true}
           scale={100}
           position={[0, -5, 0]}
-          rotation={[-1, 0, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry />
           <meshStandardMaterial />
