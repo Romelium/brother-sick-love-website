@@ -4,7 +4,7 @@ import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import SphereBoxes from "../components/SphereBoxes";
+import SphereBox from "../components/SphereBoxes";
 import styles from "../styles/Home.module.css";
 
 const HomeCanvas = () => {
@@ -15,7 +15,7 @@ const HomeCanvas = () => {
       <color attach="background" args={[0xfff2f1]} />
       <pointLight />
       {[...Array(256)].map((v, i) => (
-        <SphereBoxes key={i} />
+        <SphereBox key={i} />
       ))}
       <Text
         fontSize={0.6}

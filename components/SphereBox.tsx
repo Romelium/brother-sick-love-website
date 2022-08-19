@@ -3,7 +3,7 @@ import { useRef } from "react";
 import sphericalCoordinates from "../utils/OnUnitSphere/sphericalCoordinates";
 import randomOnUnitCircle from "../utils/randomOnUnitCircle";
 
-const SphereBoxes = () => {
+const SphereBox = () => {
   const ref = useRef<THREE.Mesh>(null!);
   const topScale = 16;
   const scale = Math.random() * topScale;
@@ -35,4 +35,4 @@ const SphereBoxes = () => {
   );
 };
 
-export default SphereBoxes;
+export default SphereBox;
