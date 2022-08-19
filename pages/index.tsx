@@ -54,8 +54,8 @@ const Home: NextPage = () => {
       <Canvas>
         <color attach="background" args={[0xfff2f1]} />
         <pointLight />
-        {[...Array(256)].map(() => (
-          <SphereBoxes />
+        {[...Array(256)].map((v, i) => (
+          <SphereBoxes key={i} />
         ))}
         <Text
           fontSize={0.6}
