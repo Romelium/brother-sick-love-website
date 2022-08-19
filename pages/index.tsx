@@ -1,5 +1,6 @@
 import { OrbitControls, Text } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRef, useState } from "react";
@@ -42,6 +43,7 @@ const HomeCanvas = () => {
   const [test, setTest] = useState<boolean>(false);
   return (
     <Canvas>
+      <gridHelper />
       <color attach="background" args={[0xfff2f1]} />
       <pointLight />
       {[...Array(256)].map((v, i) => (
@@ -63,6 +65,10 @@ const HomeCanvas = () => {
         enableZoom={false}
         enablePan={false}
       />
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.9} height={16} />
+        <Noise opacity={0.05} />
+      </EffectComposer>
     </Canvas>
   );
 };
