@@ -38,9 +38,35 @@ const SphereBoxes = () => {
     </mesh>
   );
 };
-
-const Home: NextPage = () => {
+const HomeCanvas = () => {
   const [test, setTest] = useState<boolean>(false);
+  return (
+    <Canvas>
+      <color attach="background" args={[0xfff2f1]} />
+      <pointLight />
+      {[...Array(256)].map((v, i) => (
+        <SphereBoxes key={i} />
+      ))}
+      <Text
+        fontSize={0.6}
+        color="white"
+        onClick={() => {
+          setTest(test);
+          console.log(test);
+        }}
+      >
+        Hello Love!
+      </Text>
+      <OrbitControls
+        makeDefault
+        position={[0, 0, 0]}
+        enableZoom={false}
+        enablePan={false}
+      />
+    </Canvas>
+  );
+};
+const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -51,29 +77,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Canvas>
-        <color attach="background" args={[0xfff2f1]} />
-        <pointLight />
-        {[...Array(256)].map((v, i) => (
-          <SphereBoxes key={i} />
-        ))}
-        <Text
-          fontSize={0.6}
-          color="white"
-          onClick={() => {
-            setTest(test);
-            console.log(test);
-          }}
-        >
-          Hello Love!
-        </Text>
-        <OrbitControls
-          makeDefault
-          position={[0, 0, 0]}
-          enableZoom={false}
-          enablePan={false}
-        />
-      </Canvas>
+      <HomeCanvas />
     </div>
   );
 };
