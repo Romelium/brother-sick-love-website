@@ -58,6 +58,9 @@ const CanHang = () => {
       noSignText.current.rotation.y -= Math.PI * delta;
       pleaseSign.current.rotation.z += Math.PI * delta;
       pleaseSignText.current.rotation.z += Math.PI * delta;
+
+      pleaseSignText.current.text = "YAYYYY I LOVE YOU BABY <333";
+      pleaseSignText.current.fontSize = 0.18;
     }
 
     const noScale = noSign.current.scale;
