@@ -179,45 +179,71 @@ const CanHang = () => {
   );
 };
 const HomeCanvas = () => {
+  const [Start, SetStart] = useState(false);
+  const audio = useRef<HTMLAudioElement>(null!);
   return (
-    <Canvas>
-      <Suspense
-        fallback={
-          <Text fontSize={0.5} color="white">
-            Loading...
-          </Text>
-        }
-      >
-        <color attach="background" args={[0xfff2f1]} />
-        <pointLight />
-        <Suspense fallback={null}>
-          <SphereBoxesInstanced count={256} />
-        </Suspense>
+    <>
+      <audio ref={audio} loop>
+        <source src="Rosa-Linn-SNAP.mp3" type="audio/mpeg" />
+      </audio>
+      <Canvas>
         <Suspense
           fallback={
-            <Text fontSize={0.5} color="black">
+            <Text fontSize={0.5} color="white">
               Loading...
             </Text>
           }
         >
-          <CanHang />
-        </Suspense>
-        <OrbitControls
-          makeDefault
-          position={[0, 0, 0]}
-          enableZoom={false}
-          enablePan={false}
-        />
-        <EffectComposer>
-          <Bloom
-            luminanceThreshold={0.5}
-            luminanceSmoothing={0.9}
-            height={16}
+          <color attach="background" args={[0xfff2f1]} />
+          <pointLight />
+          <Suspense fallback={null}>
+            <SphereBoxesInstanced count={256} />
+          </Suspense>
+          <Suspense
+            fallback={
+              <Text fontSize={0.5} color="black">
+                Loading...
+              </Text>
+            }
+          >
+            {Start ? (
+              <CanHang />
+            ) : (
+              <>
+                <mesh
+                  position={[0, 0, -0.125]}
+                  scale={[2, 1, 0.5]}
+                  onClick={() => {
+                    SetStart(true);
+                    audio.current.play();
+                  }}
+                >
+                  <boxGeometry />
+                  <meshToonMaterial />
+                </mesh>
+                <Text fontSize={0.5} position={[0, 0, 0.1251]} color="black">
+                  Start
+                </Text>
+              </>
+            )}
+          </Suspense>
+          <OrbitControls
+            makeDefault
+            position={[0, 0, 0]}
+            enableZoom={false}
+            enablePan={false}
           />
-          <Noise opacity={0.05} />
-        </EffectComposer>
-      </Suspense>
-    </Canvas>
+          <EffectComposer>
+            <Bloom
+              luminanceThreshold={0.5}
+              luminanceSmoothing={0.9}
+              height={16}
+            />
+            <Noise opacity={0.05} />
+          </EffectComposer>
+        </Suspense>
+      </Canvas>
+    </>
   );
 };
 const Home: NextPage = () => {
