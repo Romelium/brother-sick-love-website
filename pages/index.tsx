@@ -1,10 +1,11 @@
 import { OrbitControls, Text } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { TextureLoader } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Lines from "../components/Lines";
 import ParticleExplosion from "../components/ParticleExplosion";
 import SphereBoxesInstanced from "../components/SphereBoxesInstanced";
@@ -16,6 +17,15 @@ const sunflower =
   typeof window === "undefined"
     ? null
     : new TextureLoader().load("/sunflower.png");
+
+const Cat = () => {
+  const gltf = useLoader(GLTFLoader, "/banana-cat/scene.glb");
+  return (
+    <Suspense fallback={null}>
+      <primitive position={[0, 0, 0]} object={gltf.scene} />
+    </Suspense>
+  );
+};
 
 const HomeCanvas = () => {
   const [confetti, setConfetti] = useState<boolean>(false);
@@ -34,6 +44,7 @@ const HomeCanvas = () => {
       >
         Hello Love!
       </Text>
+      <Cat />
       {confetti ? (
         <>
           <ParticleExplosion
