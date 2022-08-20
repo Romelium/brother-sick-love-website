@@ -4,9 +4,18 @@ import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import { TextureLoader } from "three";
 import Lines from "../components/Lines";
+import ParticleExplosion from "../components/ParticleExplosion";
 import SphereBoxesInstanced from "../components/SphereBoxesInstanced";
 import styles from "../styles/Home.module.css";
+
+const heart =
+  typeof window === "undefined" ? null : new TextureLoader().load("/heart.png");
+const sunflower =
+  typeof window === "undefined"
+    ? null
+    : new TextureLoader().load("/sunflower.png");
 
 const HomeCanvas = () => {
   const [confetti, setConfetti] = useState<boolean>(false);
@@ -26,17 +35,27 @@ const HomeCanvas = () => {
         Hello Love!
       </Text>
       {confetti ? (
-        <Lines
-          count={100}
-          colors={[
-            "#A2CCB6",
-            "#FCEEB5",
-            "#EE786E",
-            "#e0feff",
-            "lightpink",
-            "lightblue",
-          ]}
-        />
+        <>
+          <ParticleExplosion
+            startDistance={2}
+            endDistance={8}
+            material={{
+              size: 0.5,
+              map: heart,
+              transparent: true,
+            }}
+          />
+          <ParticleExplosion
+            startDistance={2}
+            endDistance={8}
+            material={{
+              size: 0.5,
+              map: sunflower,
+              transparent: true,
+            }}
+          />
+          <Lines count={30} radius={8} pointRadius={4} />
+        </>
       ) : null}
       <OrbitControls
         makeDefault
