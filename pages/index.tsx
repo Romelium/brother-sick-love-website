@@ -34,13 +34,13 @@ const Cat = (props: Omit<PrimitiveProps, "object"> & { refPrimi: any }) => {
 const CanHang = () => {
   const [Yes, SetYes] = useState(false);
   const cat = useRef<any>(null!);
-  const bigSign = useRef<any>(null!);
+  const bigSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const bigSignText = useRef<any>(null!);
-  const yesSign = useRef<any>(null!);
+  const yesSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const yesSignText = useRef<any>(null!);
-  const noSign = useRef<any>(null!);
+  const noSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const noSignText = useRef<any>(null!);
-  const pleaseSign = useRef<any>(null!);
+  const pleaseSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const pleaseSignText = useRef<any>(null!);
   useFrame((state, delta) => {
     if (Yes) {
