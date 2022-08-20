@@ -6,7 +6,7 @@ import {
   useLoader,
 } from "@react-three/fiber";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { Suspense, useRef, useState } from "react";
 import { BufferGeometry, Material, Mesh, TextureLoader, Vector3 } from "three";
@@ -181,7 +181,7 @@ const CanHang = () => {
     </>
   );
 };
-const HomeCanvas = () => {
+const HomeCanvas = ({ deviceType }: { deviceType: string }) => {
   const [Start, SetStart] = useState(false);
   const audio = useRef<HTMLAudioElement>(null!);
   return (
@@ -236,20 +236,47 @@ const HomeCanvas = () => {
             enableZoom={false}
             enablePan={false}
           />
-          <EffectComposer>
-            <Bloom
-              luminanceThreshold={0.5}
-              luminanceSmoothing={0.9}
-              height={16}
-            />
-            <Noise opacity={0.05} />
-          </EffectComposer>
+          {deviceType === "mobile" ? null : (
+            <EffectComposer>
+              <Bloom
+                luminanceThreshold={0.5}
+                luminanceSmoothing={0.9}
+                height={16}
+              />
+              <Noise opacity={0.05} />
+            </EffectComposer>
+          )}
         </Suspense>
       </Canvas>
     </>
   );
 };
-const Home: NextPage = () => {
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const UA = context.req.headers["user-agent"];
+  if (UA === undefined) {
+    return {
+      props: {
+        deviceType: "desktop",
+      },
+    };
+  }
+  const isMobile = Boolean(
+    UA.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+    )
+  );
+
+  return {
+    props: {
+      deviceType: isMobile ? "mobile" : "desktop",
+    },
+  };
+};
+
+const Home: NextPage<{
+  deviceType: string;
+}> = ({ deviceType }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -260,7 +287,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomeCanvas />
+      <HomeCanvas deviceType={deviceType} />
     </div>
   );
 };
