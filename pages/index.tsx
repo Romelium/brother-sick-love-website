@@ -12,7 +12,6 @@ const HomeCanvas = () => {
   const [confetti, setConfetti] = useState<boolean>(false);
   return (
     <Canvas>
-      <gridHelper />
       <color attach="background" args={[0xfff2f1]} />
       <pointLight />
       <SphereBoxesInstanced count={256} />
