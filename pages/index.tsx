@@ -9,12 +9,13 @@ import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Suspense, useRef, useState } from "react";
-import { TextureLoader } from "three";
+import { BufferGeometry, Material, Mesh, TextureLoader, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Lines from "../components/Lines";
 import ParticleExplosion from "../components/ParticleExplosion";
 import SphereBoxesInstanced from "../components/SphereBoxesInstanced";
 import styles from "../styles/Home.module.css";
+import randomOnUnitSphere from "../utils/OnUnitSphere/randomOnUnitSphere";
 
 const heart =
   typeof window === "undefined" ? null : new TextureLoader().load("/heart.png");
@@ -33,6 +34,7 @@ const Cat = (props: Omit<PrimitiveProps, "object"> & { refPrimi: any }) => {
 };
 const CanHang = () => {
   const [Yes, SetYes] = useState(false);
+
   const cat = useRef<any>(null!);
   const bigSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const bigSignText = useRef<any>(null!);
@@ -42,6 +44,9 @@ const CanHang = () => {
   const noSignText = useRef<any>(null!);
   const pleaseSign = useRef<Mesh<BufferGeometry, Material | Material[]>>(null!);
   const pleaseSignText = useRef<any>(null!);
+
+  const noShrink = useRef(false);
+
   useFrame((state, delta) => {
     if (Yes) {
       cat.current.rotation.x += Math.PI * delta;
@@ -53,6 +58,26 @@ const CanHang = () => {
       noSignText.current.rotation.y -= Math.PI * delta;
       pleaseSign.current.rotation.z += Math.PI * delta;
       pleaseSignText.current.rotation.z += Math.PI * delta;
+    }
+
+    const noScale = noSign.current.scale;
+    const noScaleText = noSignText.current.scale;
+    if (noShrink.current) {
+      noSign.current.scale.x -= delta * 10;
+      noSignText.current.scale.x -= delta * 10;
+    } else {
+      noSign.current.scale.x += (1.5 - noScale.x) * delta * 10;
+      noSignText.current.scale.x += (1 - noScaleText.x) * delta * 10;
+    }
+    if (noShrink.current && noScale.x <= 0.001) {
+      noShrink.current = false;
+      const dir = new Vector3(...randomOnUnitSphere()).multiply(
+        noSign.current.scale
+      );
+      noSign.current.position.add(dir);
+      noSignText.current.position.add(dir);
+      noSign.current.position.setX(Math.abs(noSign.current.position.x));
+      noSignText.current.position.setX(Math.abs(noSignText.current.position.x));
     }
   });
   return (
@@ -87,7 +112,14 @@ const CanHang = () => {
       >
         Pleeease
       </Text>
-      <mesh ref={noSign} position={[1.5, 0.875, -0.5]} scale={[1.5, 1, 0.5]}>
+      <mesh
+        ref={noSign}
+        position={[1.5, 0.875, -0.5]}
+        scale={[1.5, 1, 0.5]}
+        onClick={() => {
+          if (!noShrink.current) noShrink.current = true;
+        }}
+      >
         <boxGeometry />
         <meshToonMaterial />
       </mesh>
@@ -96,10 +128,6 @@ const CanHang = () => {
         fontSize={0.5}
         position={[1.5, 0.875, -0.249]}
         color="black"
-        onClick={() => {
-          // SetYes(!Yes);
-          // console.log(Yes);
-        }}
       >
         NO
       </Text>
