@@ -65,7 +65,7 @@ const HomeCanvas = () => {
               transparent: true,
             }}
           />
-          <Lines count={30} radius={8} pointRadius={4} />
+          <Lines count={30} radius={8} pointRadius={4} innerRadius={4} />
         </>
       ) : null}
       <OrbitControls

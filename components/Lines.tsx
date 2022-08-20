@@ -60,6 +60,7 @@ const Lines = ({
   pointCount = 30,
   curveCount = 1000,
   pointRadius = 4,
+  innerRadius = 0,
 }: {
   count: number;
   radius?: number;
@@ -68,12 +69,13 @@ const Lines = ({
   pointCount?: number;
   curveCount?: number;
   pointRadius?: number;
+  innerRadius?: number;
 }) => {
   const lines = useMemo(
     () =>
       [...Array(count)].map(() => {
         const pos = new Vector3(...randomOnUnitSphere())
-          .multiplyScalar(Math.random() * radius)
+          .multiplyScalar(Math.random() * (radius - innerRadius) + innerRadius)
           .add(center);
         const points = [...Array(pointCount)].map(() =>
           pos
