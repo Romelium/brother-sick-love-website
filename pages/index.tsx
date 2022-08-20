@@ -4,11 +4,12 @@ import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import Lines from "../components/Lines";
 import SphereBoxesInstanced from "../components/SphereBoxesInstanced";
 import styles from "../styles/Home.module.css";
 
 const HomeCanvas = () => {
-  const [test, setTest] = useState<boolean>(false);
+  const [confetti, setConfetti] = useState<boolean>(false);
   return (
     <Canvas>
       <gridHelper />
@@ -19,12 +20,25 @@ const HomeCanvas = () => {
         fontSize={0.6}
         color="white"
         onClick={() => {
-          setTest(test);
-          console.log(test);
+          setConfetti(!confetti);
+          console.log(confetti);
         }}
       >
         Hello Love!
       </Text>
+      {confetti ? (
+        <Lines
+          count={100}
+          colors={[
+            "#A2CCB6",
+            "#FCEEB5",
+            "#EE786E",
+            "#e0feff",
+            "lightpink",
+            "lightblue",
+          ]}
+        />
+      ) : null}
       <OrbitControls
         makeDefault
         position={[0, 0, 0]}
