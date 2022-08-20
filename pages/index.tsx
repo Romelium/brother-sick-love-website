@@ -1,5 +1,5 @@
 import { OrbitControls, Text } from "@react-three/drei";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, PrimitiveProps, useLoader } from "@react-three/fiber";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -18,11 +18,11 @@ const sunflower =
     ? null
     : new TextureLoader().load("/sunflower.png");
 
-const Cat = () => {
+const Cat = (props: Omit<PrimitiveProps, "object">) => {
   const gltf = useLoader(GLTFLoader, "/banana-cat/scene.glb");
   return (
     <Suspense fallback={null}>
-      <primitive position={[0, 0, 0]} object={gltf.scene} />
+      <primitive {...props} object={gltf.scene} />
     </Suspense>
   );
 };
