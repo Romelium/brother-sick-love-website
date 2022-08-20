@@ -2,6 +2,8 @@ import { Color, extend, Object3DNode, useFrame } from "@react-three/fiber";
 import { MeshLine, MeshLineMaterial } from "meshline";
 import { useMemo, useRef } from "react";
 import { CatmullRomCurve3, Vector3 } from "three";
+import randomOnUnitSphere from "../utils/OnUnitSphere/randomOnUnitSphere";
+import randomRange from "../utils/randomRange";
 
 extend({ MeshLine, MeshLineMaterial });
 declare module "@react-three/fiber" {
@@ -45,31 +47,44 @@ function Fatline({
 
 const Lines = ({
   count,
-  colors,
+  radius = 10,
+  center = new Vector3(),
+  colors = [
+    "#A2CCB6",
+    "#FCEEB5",
+    "#EE786E",
+    "#e0feff",
+    "lightpink",
+    "lightblue",
+  ],
+  pointCount = 30,
+  curveCount = 1000,
+  pointRadius = 4,
 }: {
   count: number;
-  colors: (string | number | Color | undefined)[];
+  radius?: number;
+  center?: Vector3;
+  colors?: (string | number | Color | undefined)[];
+  pointCount?: number;
+  curveCount?: number;
+  pointRadius?: number;
 }) => {
   const lines = useMemo(
     () =>
       [...Array(count)].map(() => {
-        const pos = new Vector3(
-          10 - Math.random() * 20,
-          10 - Math.random() * 20,
-          10 - Math.random() * 20
-        );
-        const points = [...Array(count)].map(() =>
+        const pos = new Vector3(...randomOnUnitSphere())
+          .multiplyScalar(Math.random() * radius)
+          .add(center);
+        const points = [...Array(pointCount)].map(() =>
           pos
+            .clone()
             .add(
-              new Vector3(
-                4 - Math.random() * 8,
-                4 - Math.random() * 8,
-                2 - Math.random() * 4
+              new Vector3(...randomOnUnitSphere()).multiplyScalar(
+                Math.random() * pointRadius
               )
             )
-            .clone()
         );
-        const curve = new CatmullRomCurve3(points).getPoints(1000);
+        const curve = new CatmullRomCurve3(points).getPoints(curveCount);
         return {
           color: colors[Math.floor(colors.length * Math.random())],
           width: Math.max(0.1, 0.5 * Math.random()),
