@@ -269,7 +269,23 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Suspense fallback={<h1 style={{ textAlign: "center" }}>Loading...</h1>}>
+      <Suspense
+        fallback={
+          <>
+            <h1 style={{ textAlign: "center" }}>Loading...</h1>
+            <h2 style={{ textAlign: "center", width: "100%" }}>
+              The Code:{" "}
+              <a
+                style={{ textAlign: "center", color: "aquamarine" }}
+                target={"_blank"}
+                href="https://github.com/Romelianism/brother-sick-love-website"
+              >
+                https://github.com/Romelianism/brother-sick-love-website
+              </a>
+            </h2>
+          </>
+        }
+      >
         <HomeCanvas />
       </Suspense>
     </div>
