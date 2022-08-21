@@ -269,7 +269,9 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomeCanvas />
+      <Suspense fallback={<h1 style={{ textAlign: "center" }}>Loading...</h1>}>
+        <HomeCanvas />
+      </Suspense>
     </div>
   );
 };
