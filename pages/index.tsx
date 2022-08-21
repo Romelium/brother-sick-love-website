@@ -279,6 +279,7 @@ const Home: NextPage = () => {
                 style={{ textAlign: "center", color: "aquamarine" }}
                 target={"_blank"}
                 href="https://github.com/Romelianism/brother-sick-love-website"
+                rel="noopener noreferrer"
               >
                 https://github.com/Romelianism/brother-sick-love-website
               </a>
