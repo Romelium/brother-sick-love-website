@@ -23,6 +23,12 @@ const sunflower =
   typeof window === "undefined"
     ? null
     : new TextureLoader().load("/sunflower.png");
+const isMobile =
+  typeof navigator === "undefined"
+    ? false
+    : /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
 
 const Cat = (props: Omit<PrimitiveProps, "object"> & { refPrimi: any }) => {
   const gltf = useLoader(GLTFLoader, "/banana-cat/scene.glb");
@@ -181,7 +187,7 @@ const CanHang = () => {
     </>
   );
 };
-const HomeCanvas = ({ deviceType }: { deviceType: string }) => {
+const HomeCanvas = () => {
   const [Start, SetStart] = useState(false);
   const audio = useRef<HTMLAudioElement>(null!);
   return (
@@ -236,7 +242,7 @@ const HomeCanvas = ({ deviceType }: { deviceType: string }) => {
             enableZoom={false}
             enablePan={false}
           />
-          {deviceType === "mobile" ? null : (
+          {isMobile ? null : (
             <EffectComposer>
               <Bloom
                 luminanceThreshold={0.5}
@@ -252,31 +258,7 @@ const HomeCanvas = ({ deviceType }: { deviceType: string }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const UA = context.req.headers["user-agent"];
-  if (UA === undefined) {
-    return {
-      props: {
-        deviceType: "desktop",
-      },
-    };
-  }
-  const isMobile = Boolean(
-    UA.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    )
-  );
-
-  return {
-    props: {
-      deviceType: isMobile ? "mobile" : "desktop",
-    },
-  };
-};
-
-const Home: NextPage<{
-  deviceType: string;
-}> = ({ deviceType }) => {
+const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -287,7 +269,26 @@ const Home: NextPage<{
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomeCanvas deviceType={deviceType} />
+      <Suspense
+        fallback={
+          <>
+            <h1 style={{ textAlign: "center" }}>Loading...</h1>
+            <h2 style={{ textAlign: "center", width: "100%" }}>
+              The Code:{" "}
+              <a
+                style={{ textAlign: "center", color: "aquamarine" }}
+                target={"_blank"}
+                href="https://github.com/Romelianism/brother-sick-love-website"
+                rel="noopener noreferrer"
+              >
+                https://github.com/Romelianism/brother-sick-love-website
+              </a>
+            </h2>
+          </>
+        }
+      >
+        <HomeCanvas />
+      </Suspense>
     </div>
   );
 };
